@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weekday 5PM Countdown</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .countdown-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #countdown-timer {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .weekend-message {
+      font-size: 26px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="countdown-container">
+    <div id="countdown-timer">Loading...</div>
+  </div>
+
+  <script>
+    function updateCountdown() {
+      var now = new Date();
+      var dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+
+      var timerElement = document.getElementById("countdown-timer");
+
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        var target = new Date();
+        target.setHours(17, 0, 0, 0); // 5:00 PM
+
+        if (now > target) {
+          target.setDate(target.getDate() + 1);
+          target.setHours(17, 0, 0, 0);
+        }
+
+        var nowTime = now.getTime();
+        var targetTime = target.getTime();
+        var distance = targetTime - nowTime;
+
+        if (distance > 0) {
+          var hoursLeft = Math.floor(distance / (1000 * 60 * 60));
+          var minutesLeft = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var secondsLeft = Math.floor((distance % (1000 * 60)) / 1000);
+
+          timerElement.innerHTML =
+            `⏰ Time left: <strong>${hoursLeft}h ${minutesLeft}m ${secondsLeft}s</strong>`;
+        } else {
+          timerElement.innerHTML = "🎉 School day is over!";
+        }
+      } else {
+        timerElement.innerHTML = '<span class="weekend-message">😎 Enjoy the weekend!</span>';
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+</body>
+</html>
